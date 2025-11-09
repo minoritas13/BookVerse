@@ -82,15 +82,15 @@
 
     <!-- Script otomatis tanggal kembali -->
     <script>
-        document.getElementById('loan_date').addEventListener('change', function() {
-            const loanDate = new Date(this.value);
-            if (isNaN(loanDate)) return;
+    document.getElementById('loan_date').addEventListener('change', function() {
+        const loanDate = new Date(this.value);
+        if (isNaN(loanDate)) return;
 
-            loanDate.setDate(loanDate.getDate() + 7);
-            const year = loanDate.getFullYear();
-            const month = ('0' + (loanDate.getMonth() + 1)).slice(-2);
-            const day = ('0' + loanDate.getDate()).slice(-2);
-            document.getElementById('return_date').value = `${year}-${month}-${day}`;
-        });
+        loanDate.setDate(loanDate.getDate() + 7);
+        const year = loanDate.getFullYear();
+        const month = ('0' + (loanDate.getMonth() + 1)).slice(-2);
+        const day = ('0' + loanDate.getDate()).slice(-2);
+        document.getElementById('return_date').value = `${year}-${month}-${day}`;
+    });
     </script>
 @endsection
