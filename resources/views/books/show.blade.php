@@ -61,48 +61,17 @@
         </div>
     </div>
 
-    <!-- Form Peminjaman -->
-    <form action="{{ route('loans.store') }}" method="POST"
-          class="flex flex-col gap-8 px-6 py-8 bg-white border border-gray-100 shadow-xl rounded-2xl">
-        @csrf
-        <input type="hidden" name="book_id" value="{{ $book->id }}">
+    <!-- Script otomatis tanggal kembali -->
+    <script>
+    document.getElementById('loan_date').addEventListener('change', function() {
+        const loanDate = new Date(this.value);
+        if (isNaN(loanDate)) return;
 
-        <div>
-            <label for="loan_date" class="block mb-2 text-base font-semibold text-blue-900">Tanggal Pinjam</label>
-            <input type="date" name="tanggal_pinjam" id="loan_date"
-                   class="w-full px-4 py-2 transition border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-400" required>
-        </div>
-
-        <div>
-            <label for="return_date" class="block mb-2 text-base font-semibold text-blue-900">Tanggal Kembali</label>
-            <input type="date" name="tanggal_kembali" id="return_date"
-                   class="w-full px-4 py-2 transition border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-400">
-        </div>
-
-        <div>
-            <label for="jumlah" class="block mb-2 text-base font-semibold text-blue-900">Jumlah Buku</label>
-            <input type="number" name="jumlah" id="jumlah" value="1" min="1"
-                   class="w-full px-4 py-2 transition border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-400">
-        </div>
-
-        <button type="submit"
-            class="w-full py-3 text-lg font-bold text-white transition shadow-lg rounded-xl bg-gradient-to-r from-blue-700 via-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-700 hover:scale-105">
-            Pinjam Buku Ini
-        </button>
-    </form>
-</div>
-
-<!-- Script otomatis tanggal kembali -->
-<script>
-document.getElementById('loan_date').addEventListener('change', function() {
-    const loanDate = new Date(this.value);
-    if (isNaN(loanDate)) return;
-
-    loanDate.setDate(loanDate.getDate() + 7);
-    const year = loanDate.getFullYear();
-    const month = ('0' + (loanDate.getMonth() + 1)).slice(-2);
-    const day = ('0' + loanDate.getDate()).slice(-2);
-    document.getElementById('return_date').value = `${year}-${month}-${day}`;
-});
-</script>
+        loanDate.setDate(loanDate.getDate() + 7);
+        const year = loanDate.getFullYear();
+        const month = ('0' + (loanDate.getMonth() + 1)).slice(-2);
+        const day = ('0' + loanDate.getDate()).slice(-2);
+        document.getElementById('return_date').value = `${year}-${month}-${day}`;
+    });
+    </script>
 @endsection
