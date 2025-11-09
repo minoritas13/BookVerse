@@ -1,13 +1,11 @@
 <?php
 
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\LoansController;
-use App\Http\Controllers\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,7 +57,7 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     Route::get('/user/dashboard', [UserController::class, 'index'])->name('user.dashboard');
 
     //books route
-    Route::get('/user/books', [UserController::class, 'index'])->name('user.books');
+    Route::get('/user/books', [BookController::class, 'index'])->name('user.books');
     Route::get('/user/books/{id}', [BookController::class, 'show'])->name('user.books.show');
 
     //loan route

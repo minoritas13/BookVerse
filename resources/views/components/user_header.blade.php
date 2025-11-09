@@ -2,7 +2,7 @@
     <nav class="container flex items-center justify-between px-4 py-3 mx-auto">
         {{-- Logo atau nama aplikasi --}}
         <a href="{{ url('/') }}" class="text-2xl font-bold text-blue-600">
-            {{ config('app.name', 'MyApp') }}
+            BookVerse
         </a>
 
         {{-- Jika sudah login --}}

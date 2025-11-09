@@ -19,22 +19,23 @@
         @else
             @include('components.user_header')
         @endif
-    @endauth
-    <header class="bg-white shadow">
-        <div class="container flex items-center justify-between px-6 py-4 mx-auto">
-            <h1 class="text-2xl font-bold text-blue-600">
-                <a href="{{ url('/') }}">BookVerse</a>
-            </h1>
+    @else
+        <header class="bg-white shadow">
+            <div class="container flex items-center justify-between px-6 py-4 mx-auto">
+                <h1 class="text-2xl font-bold text-blue-600">
+                    <a href="{{ url('/') }}">BookVerse</a>
+                </h1>
 
-            <nav class="space-x-4">
-                <a href="{{ route('books.index') }}" class="text-gray-700 hover:text-blue-600">Daftar Buku</a>
-                <a href="{{ route('login') }}" class="text-gray-700 hover:text-blue-600">Login</a>
-                <a href="{{ route('register') }}" class="px-3 py-1 text-white bg-blue-600 rounded hover:bg-blue-700">
-                    Daftar
-                </a>
-            </nav>
-        </div>
-    </header>
+                <nav class="space-x-4">
+                    <a href="{{ route('books.index') }}" class="text-gray-700 hover:text-blue-600">Daftar Buku</a>
+                    <a href="{{ route('login') }}" class="text-gray-700 hover:text-blue-600">Login</a>
+                    <a href="{{ route('register') }}" class="px-3 py-1 text-white bg-blue-600 rounded hover:bg-blue-700">
+                        Daftar
+                    </a>
+                </nav>
+            </div>
+        </header>
+    @endauth
 
 
     {{-- Main Content --}}

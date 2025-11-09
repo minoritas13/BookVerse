@@ -3,27 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use App\Models\Loan;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
+        $user = Auth::user();
+        $loans = $user->loans()->with('details')->latest()->get();
 
-        $query = Book::query();
-
-        // Filter berdasarkan kategori jika dipilih
-        if ($request->filled('kategori')) {
-            $query->where('kategori', $request->kategori);
-        }
-
-        $books = $query->paginate(10);
-
-        return view('books.index', compact('books'));
-
-        $books = Book::latest()->paginate(10); // pagination biar rapi
+        return view('user.dashboard', compact('user', 'loans'));
     }
 
     public function create()
