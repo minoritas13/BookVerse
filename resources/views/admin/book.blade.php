@@ -81,7 +81,7 @@
         </div>
     @endif
 
-    <form method="GET" class="flex items-center gap-4 mb-4">
+    <form method="GET" class="flex items-center gap-4 my-10">
         <input type="text" name="search" value="{{ request('search') }}"
             placeholder="Cari judul atau penulis..."
             class="w-64 p-2 border rounded">

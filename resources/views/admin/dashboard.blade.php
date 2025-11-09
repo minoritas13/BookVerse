@@ -1,15 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="min-h-screen p-8 bg-gradient-to-b from-gray-50 to-gray-100">
-
     {{-- Header --}}
-    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8">
+    <div class="flex flex-col items-start justify-between mb-8 sm:flex-row sm:items-center">
         <div>
-            <h1 class="text-4xl font-extrabold text-gray-800 flex items-center gap-2">
+            <h1 class="flex items-center gap-2 text-4xl font-extrabold text-gray-800">
                 📊 Dashboard Admin
             </h1>
-            <p class="text-gray-500 mt-1">Pantau aktivitas dan kelola data sistem Anda dengan mudah.</p>
+            <p class="mt-1 text-gray-500">Pantau aktivitas dan kelola data sistem Anda dengan mudah.</p>
         </div>
     </div>
 
@@ -20,53 +18,18 @@
         </div>
     @endif
 
-    {{-- Statistik Ringkas --}}
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-        <div class="p-5 bg-white border border-gray-100 rounded-2xl shadow hover:shadow-md transition">
-            <div class="flex items-center justify-between">
-                <span class="text-gray-500">Total Buku</span>
-                <div class="p-2 bg-blue-100 text-blue-600 rounded-lg">📚</div>
-            </div>
-            <h2 class="mt-3 text-3xl font-bold text-gray-800">{{ $totalBooks ?? 0 }}</h2>
-        </div>
-
-        <div class="p-5 bg-white border border-gray-100 rounded-2xl shadow hover:shadow-md transition">
-            <div class="flex items-center justify-between">
-                <span class="text-gray-500">Peminjaman Aktif</span>
-                <div class="p-2 bg-yellow-100 text-yellow-600 rounded-lg">🔄</div>
-            </div>
-            <h2 class="mt-3 text-3xl font-bold text-gray-800">{{ $activeLoans ?? 0 }}</h2>
-        </div>
-
-        <div class="p-5 bg-white border border-gray-100 rounded-2xl shadow hover:shadow-md transition">
-            <div class="flex items-center justify-between">
-                <span class="text-gray-500">User Terdaftar</span>
-                <div class="p-2 bg-green-100 text-green-600 rounded-lg">👥</div>
-            </div>
-            <h2 class="mt-3 text-3xl font-bold text-gray-800">{{ $totalUsers ?? 0 }}</h2>
-        </div>
-
-        <div class="p-5 bg-white border border-gray-100 rounded-2xl shadow hover:shadow-md transition">
-            <div class="flex items-center justify-between">
-                <span class="text-gray-500">Terlambat</span>
-                <div class="p-2 bg-red-100 text-red-600 rounded-lg">⏰</div>
-            </div>
-            <h2 class="mt-3 text-3xl font-bold text-gray-800">{{ $lateLoans ?? 0 }}</h2>
-        </div>
-    </div>
-
     {{-- Panel: Daftar Peminjaman --}}
-    <div class="p-6 mb-10 bg-white shadow-sm rounded-2xl border border-gray-100">
+    <div class="p-6 mb-10 bg-white border border-gray-100 shadow-sm rounded-2xl">
         <div class="flex items-center justify-between mb-4">
-            <h2 class="text-xl font-semibold text-gray-800 flex items-center gap-2">📘 Daftar Peminjaman</h2>
+            <h2 class="flex items-center gap-2 text-xl font-semibold text-gray-800">📘 Daftar Peminjaman</h2>
             <span class="px-3 py-1 text-sm font-medium text-blue-700 bg-blue-100 rounded-full">
                 Total: {{ $loans->total() }}
             </span>
         </div>
 
         <div class="overflow-x-auto">
-            <table class="w-full text-sm border border-gray-200 rounded-lg overflow-hidden">
-                <thead class="bg-gray-100 text-gray-700 uppercase text-xs font-semibold">
+            <table class="w-full overflow-hidden text-sm border border-gray-200 rounded-lg">
+                <thead class="text-xs font-semibold text-gray-700 uppercase bg-gray-100">
                     <tr>
                         <th class="px-5 py-3 text-left">Peminjam</th>
                         <th class="px-5 py-3 text-left">Tgl Pinjam</th>
@@ -77,7 +40,7 @@
                 </thead>
                 <tbody class="divide-y divide-gray-100">
                     @forelse ($loans as $loan)
-                        <tr class="hover:bg-gray-50 transition">
+                        <tr class="transition hover:bg-gray-50">
                             <td class="px-5 py-3">{{ $loan->user->name ?? '-' }}</td>
                             <td class="px-5 py-3">{{ $loan->tanggal_pinjam }}</td>
                             <td class="px-5 py-3">{{ $loan->tanggal_kembali ?? '-' }}</td>
@@ -102,7 +65,7 @@
                                         <option value="dikembalikan" {{ $loan->status == 'dikembalikan' ? 'selected' : '' }}>Dikembalikan</option>
                                         <option value="terlambat" {{ $loan->status == 'terlambat' ? 'selected' : '' }}>Terlambat</option>
                                     </select>
-                                    <button type="submit" class="ml-2 px-3 py-1 text-white bg-blue-600 rounded-md hover:bg-blue-700 transition">
+                                    <button type="submit" class="px-3 py-1 ml-2 text-white transition bg-blue-600 rounded-md hover:bg-blue-700">
                                         Simpan
                                     </button>
                                 </form>
@@ -123,18 +86,18 @@
     </div>
 
     {{-- Panel: Manajemen User --}}
-    <div class="p-6 bg-white shadow-sm rounded-2xl border border-gray-100">
+    <div class="p-6 bg-white border border-gray-100 shadow-sm rounded-2xl">
         <div class="flex items-center justify-between mb-4">
-            <h2 class="text-xl font-semibold text-gray-800 flex items-center gap-2">👥 Manajemen User</h2>
+            <h2 class="flex items-center gap-2 text-xl font-semibold text-gray-800">👥 Manajemen User</h2>
             <a href="{{ route('admin.users.create') }}"
-               class="px-4 py-2 text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-indigo-600 rounded-md shadow hover:from-blue-700 hover:to-indigo-700 transition">
+               class="px-4 py-2 text-sm font-semibold text-white transition rounded-md shadow bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700">
                 + Tambah User
             </a>
         </div>
 
         <div class="overflow-x-auto">
-            <table class="w-full text-sm border border-gray-200 rounded-lg overflow-hidden">
-                <thead class="bg-gray-100 text-gray-700 uppercase text-xs font-semibold">
+            <table class="w-full overflow-hidden text-sm border border-gray-200 rounded-lg">
+                <thead class="text-xs font-semibold text-gray-700 uppercase bg-gray-100">
                     <tr>
                         <th class="px-5 py-3 text-left">Nama</th>
                         <th class="px-5 py-3 text-left">Email</th>
@@ -145,7 +108,7 @@
                 </thead>
                 <tbody class="divide-y divide-gray-100">
                     @forelse ($users as $user)
-                        <tr class="hover:bg-gray-50 transition">
+                        <tr class="transition hover:bg-gray-50">
                             <td class="px-5 py-3 font-medium text-gray-800">{{ $user->name }}</td>
                             <td class="px-5 py-3 text-gray-600">{{ $user->email }}</td>
                             <td class="px-5 py-3">
@@ -159,12 +122,12 @@
                                 </span>
                             </td>
                             <td class="px-5 py-3">{{ $user->telepon ?? '-' }}</td>
-                            <td class="px-5 py-3 text-center space-x-2">
-                                <a href="{{ route('admin.users.edit', $user->id) }}" class="px-3 py-1 text-sm text-white bg-yellow-500 rounded hover:bg-yellow-600 transition">Edit</a>
+                            <td class="px-5 py-3 space-x-2 text-center">
+                                <a href="{{ route('admin.users.edit', $user->id) }}" class="px-3 py-1 text-sm text-white transition bg-yellow-500 rounded hover:bg-yellow-600">Edit</a>
                                 <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" class="inline" onsubmit="return confirm('Yakin ingin menghapus user ini?')">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="px-3 py-1 text-sm text-white bg-red-600 rounded hover:bg-red-700 transition">
+                                    <button type="submit" class="px-3 py-1 text-sm text-white transition bg-red-600 rounded hover:bg-red-700">
                                         Hapus
                                     </button>
                                 </form>
@@ -183,5 +146,4 @@
             {{ $users->links() }}
         </div>
     </div>
-</div>
 @endsection

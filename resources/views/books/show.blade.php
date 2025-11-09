@@ -60,7 +60,6 @@
             </form>
         </div>
     </div>
-<<<<<<< HEAD
 
     <!-- Form Peminjaman -->
     <form action="{{ route('loans.store') }}" method="POST"
@@ -106,6 +105,4 @@ document.getElementById('loan_date').addEventListener('change', function() {
     document.getElementById('return_date').value = `${year}-${month}-${day}`;
 });
 </script>
-=======
->>>>>>> null-dev
 @endsection
