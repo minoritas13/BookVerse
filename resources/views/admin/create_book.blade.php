@@ -37,6 +37,7 @@
                 <option value="">Pilih Kategori</option>
                 <option value="fiksi" {{ old('kategori') == 'fiksi' ? 'selected' : '' }}>Fiksi</option>
                 <option value="non_fiksi" {{ old('kategori') == 'non_fiksi' ? 'selected' : '' }}>Non Fiksi</option>
+                <option value="pelajaran" {{ old('kategori') == 'pelajaran' ? 'selected' : '' }}>Pelajaran</option>
             </select>
             @error('kategori') <p class="text-sm text-red-600">{{ $message }}</p> @enderror
         </div>

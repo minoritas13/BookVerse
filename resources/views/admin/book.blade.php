@@ -16,6 +16,7 @@
             <option value="">Semua Kategori</option>
             <option value="fiksi" {{ request('kategori') == 'fiksi' ? 'selected' : '' }}>Fiksi</option>
             <option value="non_fiksi" {{ request('kategori') == 'non_fiksi' ? 'selected' : '' }}>Non Fiksi</option>
+             <option value="pelajaran" {{ request('pelajaran') == 'pelajaran' ? 'selected' : '' }}>Pelajaran</option>
         </select>
     </form>
 
