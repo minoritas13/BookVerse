@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container p-6 mx-auto">
-    <h1 class="mb-6 text-3xl font-bold">Daftar Buku</h1>
+<div class="container mx-auto py-10">
+    <h1 class="mb-8 text-4xl font-extrabold text-gray-900 tracking-tight">Daftar Buku</h1>
 
     {{-- Filter kategori --}}
-    <form action="{{ route('books.index') }}" method="GET" class="mb-4">
-        <label for="kategori" class="mr-2 text-gray-700">Filter Kategori:</label>
+    <form action="{{ route('books.index') }}" method="GET" class="flex items-center mb-6 gap-3">
+        <label for="kategori" class="text-base font-medium text-gray-700">Filter Kategori:</label>
         <select name="kategori" id="kategori" onchange="this.form.submit()"
-                class="px-3 py-2 border border-gray-300 rounded">
+                class="block w-48 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 transition duration-200 bg-white shadow-sm">
             <option value="">Semua</option>
             <option value="fiksi" {{ request('kategori') == 'Fiksi' ? 'selected' : '' }}>Fiksi</option>
             <option value="non_fiksi" {{ request('kategori') == 'Non Fiksi' ? 'selected' : '' }}>Non Fiksi</option>
@@ -16,42 +16,44 @@
     </form>
 
     {{-- Tabel data buku --}}
-    <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow">
-        <thead>
-            <tr class="text-sm leading-normal text-gray-700 uppercase bg-gray-100">
-                <th class="px-6 py-3 text-left">Judul</th>
-                <th class="px-6 py-3 text-left">Penulis</th>
-                <th class="px-6 py-3 text-left">Penerbit</th>
-                <th class="px-6 py-3 text-left">Tahun Terbit</th>
-                <th class="px-6 py-3 text-center">Aksi</th>
-            </tr>
-        </thead>
-        <tbody class="text-sm text-gray-600">
-            @forelse ($books as $book)
-                <tr class="border-b border-gray-200 hover:bg-gray-50">
-                    <td class="px-6 py-3">{{ $book->judul }}</td>
-                    <td class="px-6 py-3">{{ $book->penulis }}</td>
-                    <td class="px-6 py-3">{{ $book->penerbit }}</td>
-                    <td class="px-6 py-3">{{ $book->tahun_terbit ?? '-' }}</td>
-                    <td class="px-6 py-3 text-center">
-                        <a href="{{ route('user.books.show', $book->id) }}"
-                           class="px-3 py-1 text-white bg-blue-600 rounded hover:bg-blue-700">
-                           Detail
-                        </a>
-                    </td>
-                </tr>
-            @empty
+    <div class="overflow-x-auto bg-white rounded-xl shadow-lg">
+        <table class="min-w-full">
+            <thead class="bg-gradient-to-r from-blue-500 via-blue-700 to-blue-900 text-white">
                 <tr>
-                    <td colspan="5" class="px-6 py-4 text-center text-gray-500">
-                        Tidak ada buku ditemukan.
-                    </td>
+                    <th class="px-6 py-4 text-left text-lg font-semibold">Judul</th>
+                    <th class="px-6 py-4 text-left text-lg font-semibold">Penulis</th>
+                    <th class="px-6 py-4 text-left text-lg font-semibold">Penerbit</th>
+                    <th class="px-6 py-4 text-left text-lg font-semibold">Tahun Terbit</th>
+                    <th class="px-6 py-4 text-center text-lg font-semibold">Aksi</th>
                 </tr>
-            @endforelse
-        </tbody>
-    </table>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+                @forelse ($books as $book)
+                    <tr class="hover:bg-blue-50 transition">
+                        <td class="px-6 py-4">{{ $book->judul }}</td>
+                        <td class="px-6 py-4">{{ $book->penulis }}</td>
+                        <td class="px-6 py-4">{{ $book->penerbit }}</td>
+                        <td class="px-6 py-4">{{ $book->tahun_terbit ?? '-' }}</td>
+                        <td class="px-6 py-4 text-center">
+                            <a href="{{ route('user.books.show', $book->id) }}"
+                               class="inline-block px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-800 hover:scale-105 transition duration-150">
+                                Detail
+                            </a>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="5" class="px-6 py-8 text-center text-gray-500">
+                            Tidak ada buku ditemukan.
+                        </td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
 
     {{-- Pagination --}}
-    <div class="mt-6">
+    <div class="flex justify-center mt-8">
         {{ $books->withQueryString()->links() }}
     </div>
 </div>
