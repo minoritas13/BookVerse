@@ -15,6 +15,16 @@
         </select>
     </form>
 
+    <form method="GET" class="flex items-center gap-4 mb-4">
+        <input type="text" name="search" value="{{ request('search') }}"
+            placeholder="Cari judul atau penulis..."
+            class="p-2 border rounded w-64">
+        <button type="submit"
+            class="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700">
+            Cari
+        </button>
+    </form>
+
     {{-- Tabel data buku --}}
     <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow">
         <thead>

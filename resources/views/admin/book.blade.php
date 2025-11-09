@@ -26,6 +26,16 @@
         </div>
     @endif
 
+    <form method="GET" class="flex items-center gap-4 mb-4">
+        <input type="text" name="search" value="{{ request('search') }}"
+            placeholder="Cari judul atau penulis..."
+            class="p-2 border rounded w-64">
+        <button type="submit"
+            class="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700">
+            Cari
+        </button>
+    </form>
+
     {{-- Tabel data buku --}}
     <table class="min-w-full border border-gray-200 rounded-lg shadow">
         <thead>
@@ -35,6 +45,7 @@
                 <th class="px-6 py-3 text-left">Penerbit</th>
                 <th class="px-6 py-3 text-left">Tahun</th>
                 <th class="px-6 py-3 text-left">Kategori</th>
+                <th class="px-6 py-3 text-left">Status</th>
                 <th class="px-6 py-3 text-center">Aksi</th>
             </tr>
         </thead>
@@ -46,6 +57,17 @@
                     <td class="px-6 py-3">{{ $book->penerbit }}</td>
                     <td class="px-6 py-3">{{ $book->tahun_terbit ?? '-' }}</td>
                     <td class="px-6 py-3 capitalize">{{ $book->kategori ?? '-' }}</td>
+                    <td class="px-6 py-3">
+                        @if($book->status == 'dipinjam')
+                            <span class="px-2 py-1 text-xs font-semibold text-red-700 bg-red-100 rounded-full">
+                                Dipinjam
+                            </span>
+                        @else
+                            <span class="px-2 py-1 text-xs font-semibold text-green-700 bg-green-100 rounded-full">
+                                Tersedia
+                            </span>
+                        @endif
+                    </td>
                     <td class="px-6 py-3 space-x-2 text-center">
                         <a href="{{ route('admin.book.edit', $book->id) }}"
                            class="px-3 py-1 text-white bg-yellow-500 rounded hover:bg-yellow-600">Edit</a>

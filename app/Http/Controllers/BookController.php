@@ -15,16 +15,24 @@ class BookController extends Controller
     {
         $query = Book::query();
 
-        // Filter berdasarkan kategori jika dipilih
+        // 🔍 Filter berdasarkan kategori (jika dipilih)
         if ($request->filled('kategori')) {
             $query->where('kategori', $request->kategori);
         }
 
-        $books = $query->paginate(10);
+        // 🔎 Pencarian berdasarkan judul atau penulis
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('judul', 'like', '%' . $search . '%')
+                ->orWhere('penulis', 'like', '%' . $search . '%');
+            });
+        }
+
+        // 📄 Pagination
+        $books = $query->paginate(10)->withQueryString();
 
         return view('books.index', compact('books'));
-
-        $books = Book::latest()->paginate(10); // pagination biar rapi
     }
 
     /**

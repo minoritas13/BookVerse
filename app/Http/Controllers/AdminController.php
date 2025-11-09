@@ -27,6 +27,11 @@ class AdminController extends Controller
             $query->where('kategori', $request->kategori);
         }
 
+        if ($request->has('search')) {
+            $query->where('judul', 'like', '%' . $request->search . '%')
+                ->orWhere('penulis', 'like', '%' . $request->search . '%');
+        }
+
         $books = $query->paginate(10);
 
         return view('admin.book', compact('books'));

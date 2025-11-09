@@ -26,6 +26,7 @@ Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('/book/filter',[BookController::class,'index'])->name('books.index');
+Route::get('/books', [App\Http\Controllers\BookController::class, 'index'])->name('books.index');
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
     //admin dashboard

@@ -34,5 +34,15 @@ class AdminUserSeeder extends Seeder
             'password' => Hash::make('password'),
             'role' => 'user',
         ]);
+
+        User::create([
+            'id' => Str::uuid(),
+            'name' => 'Sulthon Aris Setiawan',
+            'email' => 'sullthon.a.s@gmail.com',
+            'telepon' => '081293482363',
+            'alamat' => 'jalan jalan',
+            'password' => Hash::make('password'),
+            'role' => 'user',
+        ]);
     }
 }
