@@ -11,15 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('loan_details', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->string('password');
-            $table->string('role')->default('user'); // admin / user
-            $table->string('telepon')->nullable();
-            $table->text('alamat')->nullable();
+            $table->uuid('loan_id');
+            $table->uuid('book_id');
+            $table->integer('jumlah')->default(1);
             $table->timestamps();
+
+            $table->foreign('loan_id')->references('id')->on('loans')->cascadeOnDelete();
+            $table->foreign('book_id')->references('id')->on('books')->cascadeOnDelete();
         });
     }
 
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('loan_details');
     }
 };
