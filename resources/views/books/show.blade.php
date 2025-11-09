@@ -3,6 +3,25 @@
 @section('content')
 <div class="container mx-auto py-12 max-w-2xl">
 
+    {{-- Notifikasi Berhasil --}}
+    @if(session('success'))
+        <div id="notif-success" class="max-w-md mx-auto mb-6">
+            <div class="flex items-center px-4 py-3 text-white bg-green-500 rounded-lg shadow-lg animate__animated animate__fadeInDown">
+                <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M9 12l2 2l4 -4"/>
+                </svg>
+                <span class="font-semibold">{{ session('success') }}</span>
+            </div>
+        </div>
+        <script>
+            setTimeout(() => {
+                const notif = document.getElementById('notif-success');
+                if (notif) notif.style.display = 'none';
+            }, 3000);
+        </script>
+    @endif
+
     <!-- Tombol Kembali Modern -->
     <div class="mb-8 flex items-center justify-center">
         <a href="{{ route('books.index') }}"
@@ -50,11 +69,11 @@
         <div>
             <label for="loan_date" class="block mb-2 text-base font-semibold text-blue-900">Tanggal Pinjam</label>
             <input type="date" name="tanggal_pinjam" id="loan_date"
-                   class="w-full px-4 py-2 rounded-lg border border-blue-200 focus:ring-2 focus:ring-blue-400 transition">
+                   class="w-full px-4 py-2 rounded-lg border border-blue-200 focus:ring-2 focus:ring-blue-400 transition" required>
         </div>
 
         <div>
-            <label for="return_date" class="block mb-2 text-base font-semibold text-blue-900">Tanggal Kembali (Opsional)</label>
+            <label for="return_date" class="block mb-2 text-base font-semibold text-blue-900">Tanggal Kembali</label>
             <input type="date" name="tanggal_kembali" id="return_date"
                    class="w-full px-4 py-2 rounded-lg border border-blue-200 focus:ring-2 focus:ring-blue-400 transition">
         </div>
@@ -72,4 +91,18 @@
         </button>
     </form>
 </div>
+
+<!-- Script otomatis tanggal kembali -->
+<script>
+document.getElementById('loan_date').addEventListener('change', function() {
+    const loanDate = new Date(this.value);
+    if (isNaN(loanDate)) return;
+
+    loanDate.setDate(loanDate.getDate() + 7);
+    const year = loanDate.getFullYear();
+    const month = ('0' + (loanDate.getMonth() + 1)).slice(-2);
+    const day = ('0' + loanDate.getDate()).slice(-2);
+    document.getElementById('return_date').value = `${year}-${month}-${day}`;
+});
+</script>
 @endsection
