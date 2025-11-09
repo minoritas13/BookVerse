@@ -1,92 +1,93 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mx-auto py-12 max-w-2xl">
+    <div class="container p-6 mx-auto">
 
-    {{-- Notifikasi Berhasil --}}
-    @if(session('success'))
-        <div id="notif-success" class="max-w-md mx-auto mb-6">
-            <div class="flex items-center px-4 py-3 text-white bg-green-500 rounded-lg shadow-lg animate__animated animate__fadeInDown">
-                <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M9 12l2 2l4 -4"/>
-                </svg>
-                <span class="font-semibold">{{ session('success') }}</span>
-            </div>
-        </div>
-        <script>
-            setTimeout(() => {
-                const notif = document.getElementById('notif-success');
-                if (notif) notif.style.display = 'none';
-            }, 3000);
-        </script>
-    @endif
-
-    <!-- Tombol Kembali Modern -->
-    <div class="mb-8 flex items-center justify-center">
         <a href="{{ route('books.index') }}"
-           class="flex items-center gap-2 px-5 py-2 rounded-full bg-gradient-to-r from-blue-500 via-blue-700 to-blue-500 text-white font-semibold shadow-lg
-                  transition-all duration-200 hover:bg-blue-700 hover:scale-105 focus:outline-none ring-2 ring-blue-200">
-            <svg class="w-5 h-5" fill="none" stroke="white" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M15 19l-7-7 7-7"></path>
+            class="inline-flex items-center mb-6 text-blue-600 transition hover:text-blue-800">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                class="w-5 h-5 mr-1" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    stroke-width="2" d="M15 19l-7-7 7-7" />
             </svg>
-            Kembali ke Daftar Buku
+            Kembali ke daftar buku
         </a>
-    </div>
 
-    <!-- Card Info Buku -->
-    <div class="p-8 bg-gradient-to-br from-blue-100 via-white to-white rounded-2xl shadow-2xl flex flex-col gap-6 mb-8 border border-blue-200">
-        <h1 class="text-4xl text-center font-extrabold text-gray-900 mb-2 drop-shadow-lg">{{ $book->judul }}</h1>
-        <div class="flex flex-wrap justify-center gap-8 text-gray-800">
-            <div class="text-center">
-                <span class="font-semibold">Penulis:</span>
-                <span>{{ $book->penulis }}</span>
-            </div>
-            <div class="text-center">
-                <span class="font-semibold">Penerbit:</span>
-                <span>{{ $book->penerbit }}</span>
-            </div>
-            <div class="text-center">
-                <span class="font-semibold">Tahun Terbit:</span>
-                <span>{{ $book->tahun_terbit ?? '-' }}</span>
-            </div>
-            <div class="text-center">
-                <span class="font-semibold">Kategori:</span>
-                <span class="inline-block rounded-xl px-3 py-1 bg-blue-200 text-blue-900 text-xs font-bold uppercase tracking-wider ml-1 shadow">
-                    {{ $book->kategori ?? '-' }}
-                </span>
+        {{-- Card Detail Buku --}}
+        <div class="p-8 transition-transform bg-gradient-to-br from-white to-blue-50 rounded-xl shadow-xl hover:shadow-2xl hover:scale-[1.01]">
+            <h1 class="mb-6 text-3xl font-bold text-indigo-700">{{ $book->judul }}</h1>
+
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+                <p class="text-lg"><strong class="text-blue-500">Penulis:</strong> {{ $book->penulis }}</p>
+                <p class="text-lg"><strong class="text-blue-500">Penerbit:</strong> {{ $book->penerbit }}</p>
+                <p class="text-lg"><strong class="text-blue-500">Tahun Terbit:</strong> {{ $book->tahun_terbit ?? '-' }}</p>
+                <p class="text-lg"><strong class="text-blue-500">Kategori:</strong> {{ $book->kategori ?? '-' }}</p>
             </div>
         </div>
+
+        {{-- Form Peminjaman --}}
+        <div class="p-8 mt-8 bg-white shadow-lg rounded-xl">
+            <h2 class="mb-4 text-3xl font-bold text-indigo-700">Form Peminjaman Buku</h2>
+            <p class="mb-6 text-gray-600">Isi data di bawah untuk melakukan peminjaman buku.</p>
+
+            <form action="{{ route('loans.store') }}" method="POST" class="space-y-6">
+                @csrf
+                <input type="hidden" name="book_id" value="{{ $book->id }}">
+
+                <div>
+                    <label for="loan_date" class="block text-sm font-medium text-gray-700">Tanggal Pinjam</label>
+                    <input type="date" name="tanggal_pinjam" id="loan_date"
+                        class="w-full p-3 mt-1 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-300 focus:outline-none"
+                        required>
+                </div>
+
+                <div>
+                    <label for="return_date" class="block text-sm font-medium text-gray-700">Tanggal Kembali (Opsional)</label>
+                    <input type="date" name="tanggal_kembali" id="return_date"
+                        class="w-full p-3 mt-1 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-300 focus:outline-none">
+                </div>
+
+                <div>
+                    <label for="jumlah" class="block text-sm font-medium text-gray-700">Jumlah Buku</label>
+                    <input type="number" name="jumlah" id="jumlah" value="1" min="1"
+                        class="w-full p-3 mt-1 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-300 focus:outline-none">
+                </div>
+                <button type="submit"
+                    class="w-full py-3 text-lg font-semibold text-white transition bg-blue-600 rounded-md shadow-md hover:bg-blue-700 hover:shadow-xl">
+                    Pinjam Buku
+                </button>
+            </form>
+        </div>
     </div>
+<<<<<<< HEAD
 
     <!-- Form Peminjaman -->
     <form action="{{ route('loans.store') }}" method="POST"
-          class="bg-white rounded-2xl shadow-xl px-6 py-8 flex flex-col gap-8 border border-gray-100">
+          class="flex flex-col gap-8 px-6 py-8 bg-white border border-gray-100 shadow-xl rounded-2xl">
         @csrf
         <input type="hidden" name="book_id" value="{{ $book->id }}">
 
         <div>
             <label for="loan_date" class="block mb-2 text-base font-semibold text-blue-900">Tanggal Pinjam</label>
             <input type="date" name="tanggal_pinjam" id="loan_date"
-                   class="w-full px-4 py-2 rounded-lg border border-blue-200 focus:ring-2 focus:ring-blue-400 transition" required>
+                   class="w-full px-4 py-2 transition border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-400" required>
         </div>
 
         <div>
             <label for="return_date" class="block mb-2 text-base font-semibold text-blue-900">Tanggal Kembali</label>
             <input type="date" name="tanggal_kembali" id="return_date"
-                   class="w-full px-4 py-2 rounded-lg border border-blue-200 focus:ring-2 focus:ring-blue-400 transition">
+                   class="w-full px-4 py-2 transition border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-400">
         </div>
 
         <div>
             <label for="jumlah" class="block mb-2 text-base font-semibold text-blue-900">Jumlah Buku</label>
             <input type="number" name="jumlah" id="jumlah" value="1" min="1"
-                   class="w-full px-4 py-2 rounded-lg border border-blue-200 focus:ring-2 focus:ring-blue-400 transition">
+                   class="w-full px-4 py-2 transition border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-400">
         </div>
 
         <button type="submit"
-            class="w-full py-3 text-lg font-bold rounded-xl bg-gradient-to-r from-blue-700 via-blue-600 to-blue-500 text-white shadow-lg
-                   hover:from-blue-500 hover:to-blue-700 hover:scale-105 transition">
+            class="w-full py-3 text-lg font-bold text-white transition shadow-lg rounded-xl bg-gradient-to-r from-blue-700 via-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-700 hover:scale-105">
             Pinjam Buku Ini
         </button>
     </form>
@@ -105,4 +106,6 @@ document.getElementById('loan_date').addEventListener('change', function() {
     document.getElementById('return_date').value = `${year}-${month}-${day}`;
 });
 </script>
+=======
+>>>>>>> null-dev
 @endsection

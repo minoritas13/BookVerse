@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('penulis');
             $table->string('penerbit');
             $table->year('tahun_terbit')->nullable();
-            $table->enum('kategori',['fiksi','non_fiksi'])->nullable();
+            $table->enum('kategori',['fiksi','non_fiksi','pelajaran'])->nullable();
             $table->timestamps();
         });
     }
