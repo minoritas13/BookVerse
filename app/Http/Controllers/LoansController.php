@@ -7,6 +7,7 @@ use App\Models\LoanDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Carbon\Carbon;
 
 class LoansController extends Controller
 {
@@ -44,6 +45,9 @@ class LoansController extends Controller
             ->with('success', 'Buku berhasil dipinjam!');
     }
 
+    /**
+     * Update status peminjaman tanpa denda.
+     */
     public function updateStatus(Request $request, $id)
     {
         $request->validate([
@@ -60,6 +64,9 @@ class LoansController extends Controller
 
         $loan->save();
 
-        return redirect()->route('admin.loans')->with('success', 'Status pinjaman berhasil diperbarui!');
+        $pesan = 'Status pinjaman berhasil diperbarui!';
+        // Pesan denda sudah dihapus
+
+        return redirect()->route('admin.loans')->with('success', $pesan);
     }
 }

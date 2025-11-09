@@ -37,8 +37,7 @@
                             <td class="px-4 py-3">{{ $loan->user->name ?? '-' }}</td>
                             <td class="px-4 py-3">{{ $loan->tanggal_pinjam }}</td>
                             <td class="px-4 py-3">{{ $loan->tanggal_kembali ?? '-' }}</td>
-
-                            {{-- Pilih Satu kelas badge untuk status (tidak duplikat) --}}
+                            {{-- Status badge --}}
                             <td class="px-4 py-3">
                                 @php
                                     $badgeText = $loan->status;
@@ -56,18 +55,15 @@
                                     {{ $badgeText }}
                                 </span>
                             </td>
-
                             <td class="px-4 py-3 text-center">
                                 <form action="{{ route('admin.loans.updateStatus', $loan->id) }}" method="POST" class="inline">
                                     @csrf
                                     @method('PUT')
-
                                     <select name="status" class="p-1 text-sm border rounded">
                                         <option value="dipinjam" {{ $loan->status == 'dipinjam' ? 'selected' : '' }}>Dipinjam</option>
                                         <option value="dikembalikan" {{ $loan->status == 'dikembalikan' ? 'selected' : '' }}>Dikembalikan</option>
                                         <option value="terlambat" {{ $loan->status == 'terlambat' ? 'selected' : '' }}>Terlambat</option>
                                     </select>
-
                                     <button type="submit" class="px-3 py-1 ml-1 text-sm text-white bg-blue-600 rounded hover:bg-blue-700">
                                         Update
                                     </button>
@@ -82,13 +78,12 @@
                 </tbody>
             </table>
         </div>
-
         <div class="mt-4">
             {{ $loans->links() }}
         </div>
     </div>
 
-    {{-- PANEL 2: MANAJEMEN USER (di bawah) --}}
+    {{-- PANEL 2: MANAJEMEN USER --}}
     <div class="p-6 bg-white shadow-md rounded-xl">
         <div class="flex items-center justify-between mb-4">
             <h2 class="text-xl font-semibold text-gray-800">👥 Manajemen User</h2>
@@ -96,7 +91,6 @@
                 + Tambah User
             </a>
         </div>
-
         <div class="overflow-x-auto">
             <table class="w-full border border-gray-200 rounded-lg">
                 <thead class="bg-gray-100">
@@ -113,8 +107,7 @@
                         <tr class="text-sm border-t hover:bg-gray-50">
                             <td class="px-4 py-3">{{ $user->name }}</td>
                             <td class="px-4 py-3">{{ $user->email }}</td>
-
-                            {{-- Role badge (pilih satu kelas saja) --}}
+                            {{-- Role badge --}}
                             <td class="px-4 py-3">
                                 @php
                                     $roleBadge = $user->role === 'admin'
@@ -125,7 +118,6 @@
                                     {{ $user->role }}
                                 </span>
                             </td>
-
                             <td class="px-4 py-3">{{ $user->telepon ?? '-' }}</td>
                             <td class="px-4 py-3 text-center">
                                 <a href="{{ route('admin.users.edit', $user->id) }}" class="px-3 py-1 text-sm text-white bg-yellow-500 rounded hover:bg-yellow-600">Edit</a>
@@ -144,7 +136,6 @@
                 </tbody>
             </table>
         </div>
-
         <div class="mt-4">
             {{ $users->links() }}
         </div>
