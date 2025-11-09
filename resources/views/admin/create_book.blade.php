@@ -1,51 +1,100 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="p-6 bg-white rounded-lg shadow">
-    <h2 class="mb-4 text-xl font-semibold">Tambah Buku Baru</h2>
+<div class="max-w-3xl mx-auto">
 
-    <form action="{{ route('admin.book.store') }}" method="POST" class="space-y-4">
-        @csrf
+    <div class="flex justify-start mb-6">
+        <a href="{{ route('admin.books') }}"
+           class="flex items-center gap-2 px-4 py-2 text-indigo-600 hover:underline font-medium">
+            ← Kembali ke daftar buku
+        </a>
+    </div>
 
-        <div>
-            <label class="block text-sm font-medium">Judul Buku</label>
-            <input type="text" name="judul" class="w-full p-2 border rounded" value="{{ old('judul') }}">
-            @error('judul') <p class="text-sm text-red-600">{{ $message }}</p> @enderror
+    <div class="bg-white border border-gray-200 rounded-xl shadow-sm">
+
+        <div class="px-6 py-5 border-b bg-gray-50 rounded-t-xl">
+            <h2 class="text-xl font-bold text-indigo-700">Tambah Buku Baru</h2>
+            <p class="mt-1 text-sm text-gray-500">Isi data buku secara lengkap dan akurat.</p>
         </div>
 
-        <div>
-            <label class="block text-sm font-medium">Penulis</label>
-            <input type="text" name="penulis" class="w-full p-2 border rounded" value="{{ old('penulis') }}">
-            @error('penulis') <p class="text-sm text-red-600">{{ $message }}</p> @enderror
-        </div>
+        @if(session('success'))
+            <div class="mx-6 mt-4 p-3 text-green-700 bg-green-50 border border-green-200 rounded-lg">
+                {{ session('success') }}
+            </div>
+        @endif
 
-        <div>
-            <label class="block text-sm font-medium">Penerbit</label>
-            <input type="text" name="penerbit" class="w-full p-2 border rounded" value="{{ old('penerbit') }}">
-            @error('penerbit') <p class="text-sm text-red-600">{{ $message }}</p> @enderror
-        </div>
+        {{-- Form --}}
+        <form action="{{ route('admin.book.store') }}" method="POST" class="px-6 py-6 space-y-5">
+            @csrf
 
-        <div>
-            <label class="block text-sm font-medium">Tahun Terbit</label>
-            <input type="number" name="tahun_terbit" class="w-full p-2 border rounded" value="{{ old('tahun_terbit') }}">
-            @error('tahun_terbit') <p class="text-sm text-red-600">{{ $message }}</p> @enderror
-        </div>
+            <div>
+                <label class="block mb-1 text-sm font-medium text-gray-700">Judul Buku</label>
+                <input type="text" name="judul"
+                       value="{{ old('judul') }}"
+                       class="w-full p-2.5 border border-gray-300 rounded-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200 text-gray-800">
+                @error('judul')
+                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
 
-        <div>
-            <label class="block text-sm font-medium">Kategori</label>
-            <select name="kategori" class="w-full p-2 border rounded">
-                <option value="">Pilih Kategori</option>
-                <option value="fiksi" {{ old('kategori') == 'fiksi' ? 'selected' : '' }}>Fiksi</option>
-                <option value="non_fiksi" {{ old('kategori') == 'non_fiksi' ? 'selected' : '' }}>Non Fiksi</option>
-                <option value="pelajaran" {{ old('kategori') == 'pelajaran' ? 'selected' : '' }}>Pelajaran</option>
-            </select>
-            @error('kategori') <p class="text-sm text-red-600">{{ $message }}</p> @enderror
-        </div>
+            <div>
+                <label class="block mb-1 text-sm font-medium text-gray-700">Penulis</label>
+                <input type="text" name="penulis"
+                       value="{{ old('penulis') }}"
+                       class="w-full p-2.5 border border-gray-300 rounded-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200 text-gray-800">
+                @error('penulis')
+                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
 
-        <div class="flex justify-end space-x-2">
-            <a href="{{ route('admin.books') }}" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Batal</a>
-            <button type="submit" class="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700">Simpan</button>
-        </div>
-    </form>
+            <div>
+                <label class="block mb-1 text-sm font-medium text-gray-700">Penerbit</label>
+                <input type="text" name="penerbit"
+                       value="{{ old('penerbit') }}"
+                       class="w-full p-2.5 border border-gray-300 rounded-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200 text-gray-800">
+                @error('penerbit')
+                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div>
+                <label class="block mb-1 text-sm font-medium text-gray-700">Tahun Terbit</label>
+                <input type="number" name="tahun_terbit"
+                       value="{{ old('tahun_terbit') }}"
+                       class="w-full p-2.5 border border-gray-300 rounded-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200 text-gray-800">
+                @error('tahun_terbit')
+                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div>
+                <label class="block mb-1 text-sm font-medium text-gray-700">Kategori</label>
+                <select name="kategori"
+                        class="w-full p-2.5 border border-gray-300 rounded-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200 text-gray-800">
+                    <option value="">Pilih Kategori</option>
+                    <option value="fiksi" {{ old('kategori') == 'fiksi' ? 'selected' : '' }}>Fiksi</option>
+                    <option value="non_fiksi" {{ old('kategori') == 'non_fiksi' ? 'selected' : '' }}>Non Fiksi</option>
+                    <option value="pelajaran" {{ old('kategori') == 'pelajaran' ? 'selected' : '' }}>Pelajaran</option>
+                </select>
+                @error('kategori')
+                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div class="flex justify-end gap-3">
+                <a href="{{ route('admin.books') }}"
+                   class="px-5 py-2.5 text-gray-700 bg-gray-200 border border-gray-300 rounded-lg hover:bg-gray-300 transition">
+                    Batal
+                </a>
+
+                <button type="submit"
+                        class="px-5 py-2.5 text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition shadow-sm">
+                    Simpan
+                </button>
+            </div>
+
+        </form>
+    </div>
+
 </div>
 @endsection
