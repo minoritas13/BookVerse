@@ -1,75 +1,91 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="p-6 bg-white rounded-lg shadow">
-    <div class="flex items-center justify-between mb-4">
-        <h2 class="text-xl font-semibold">Daftar Buku</h2>
+<div class="p-6">
+
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8">
+        <div>
+            <h2 class="text-3xl font-extrabold text-gray-800 flex items-center gap-2">
+                📚 <span>Manajemen Buku</span>
+            </h2>
+            <p class="text-gray-500 mt-1">Kelola koleksi buku perpustakaan Anda dengan mudah.</p>
+        </div>
         <a href="{{ route('admin.book.create') }}"
-           class="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700">
-           + Tambah Buku
+           class="mt-4 sm:mt-0 inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg shadow hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 font-semibold">
+            ➕ Tambah Buku
         </a>
     </div>
 
-    {{-- Filter kategori --}}
-    <form method="GET" action="{{ route('admin.books') }}" class="mb-4">
-        <select name="kategori" class="p-2 border rounded" onchange="this.form.submit()">
-            <option value="">Semua Kategori</option>
-            <option value="fiksi" {{ request('kategori') == 'fiksi' ? 'selected' : '' }}>Fiksi</option>
-            <option value="non_fiksi" {{ request('kategori') == 'non_fiksi' ? 'selected' : '' }}>Non Fiksi</option>
-        </select>
-    </form>
+    <!-- Filter -->
+    <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <form method="GET" action="{{ route('admin.books') }}" class="flex items-center gap-2">
+            <label for="kategori" class="font-medium text-gray-600">Filter Kategori:</label>
+            <select name="kategori" id="kategori"
+                    class="p-2 border border-gray-300 rounded-lg bg-white focus:ring-blue-500 focus:border-blue-500 transition"
+                    onchange="this.form.submit()">
+                <option value="">Semua</option>
+                <option value="fiksi" {{ request('kategori') == 'fiksi' ? 'selected' : '' }}>Fiksi</option>
+                <option value="non_fiksi" {{ request('kategori') == 'non_fiksi' ? 'selected' : '' }}>Non Fiksi</option>
+            </select>
+        </form>
 
-    {{-- Pesan sukses --}}
-    @if (session('success'))
-        <div class="p-3 mb-4 text-green-700 bg-green-100 rounded">
-            {{ session('success') }}
+        <!-- Pesan sukses -->
+        @if (session('success'))
+            <div class="px-4 py-2 bg-green-100 text-green-700 rounded-lg shadow-sm border border-green-200 text-sm font-medium">
+                ✅ {{ session('success') }}
+            </div>
+        @endif
+    </div>
+
+    <!-- Daftar Buku -->
+    @if ($books->count() > 0)
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            @foreach ($books as $book)
+                <div class="bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition duration-200 overflow-hidden">
+                    <div class="p-5">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <h3 class="text-lg font-bold text-gray-900 truncate">{{ $book->judul }}</h3>
+                                <p class="text-sm text-gray-600 mt-1">{{ $book->penulis }}</p>
+                            </div>
+                            <span class="text-xs font-semibold px-2 py-1 rounded-full 
+                                {{ $book->kategori === 'fiksi' ? 'bg-purple-100 text-purple-700' : 'bg-blue-100 text-blue-700' }}">
+                                {{ ucfirst($book->kategori ?? 'Umum') }}
+                            </span>
+                        </div>
+
+                        <div class="mt-4 text-sm text-gray-500 space-y-1">
+                            <p><span class="font-semibold text-gray-700">📖 Penerbit:</span> {{ $book->penerbit }}</p>
+                            <p><span class="font-semibold text-gray-700">📅 Tahun:</span> {{ $book->tahun_terbit ?? '-' }}</p>
+                        </div>
+
+                        <div class="mt-5 flex items-center justify-between border-t pt-3">
+                            <a href="{{ route('admin.book.edit', $book->id) }}"
+                               class="inline-flex items-center gap-1 px-3 py-1.5 bg-yellow-400 text-gray-900 rounded-md hover:bg-yellow-500 transition font-semibold text-sm">
+                                ✏️ Edit
+                            </a>
+                            <form action="{{ route('admin.book.destroy', $book->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus buku ini?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit"
+                                        class="inline-flex items-center gap-1 px-3 py-1.5 bg-red-600 text-white rounded-md hover:bg-red-700 transition font-semibold text-sm">
+                                    🗑️ Hapus
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    @else
+        <div class="text-center py-10 text-gray-500 bg-white rounded-xl border">
+            <p class="text-lg">📭 Belum ada data buku yang tersedia.</p>
         </div>
     @endif
 
-    {{-- Tabel data buku --}}
-    <table class="min-w-full border border-gray-200 rounded-lg shadow">
-        <thead>
-            <tr class="text-sm leading-normal text-gray-700 uppercase bg-gray-100">
-                <th class="px-6 py-3 text-left">Judul</th>
-                <th class="px-6 py-3 text-left">Penulis</th>
-                <th class="px-6 py-3 text-left">Penerbit</th>
-                <th class="px-6 py-3 text-left">Tahun</th>
-                <th class="px-6 py-3 text-left">Kategori</th>
-                <th class="px-6 py-3 text-center">Aksi</th>
-            </tr>
-        </thead>
-        <tbody class="text-sm text-gray-600">
-            @forelse ($books as $book)
-                <tr class="border-b border-gray-200 hover:bg-gray-50">
-                    <td class="px-6 py-3">{{ $book->judul }}</td>
-                    <td class="px-6 py-3">{{ $book->penulis }}</td>
-                    <td class="px-6 py-3">{{ $book->penerbit }}</td>
-                    <td class="px-6 py-3">{{ $book->tahun_terbit ?? '-' }}</td>
-                    <td class="px-6 py-3 capitalize">{{ $book->kategori ?? '-' }}</td>
-                    <td class="px-6 py-3 space-x-2 text-center">
-                        <a href="{{ route('admin.book.edit', $book->id) }}"
-                           class="px-3 py-1 text-white bg-yellow-500 rounded hover:bg-yellow-600">Edit</a>
-                        <form action="{{ route('admin.book.destroy', $book->id) }}" method="POST" class="inline">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit"
-                                    class="px-3 py-1 text-white bg-red-600 rounded hover:bg-red-700"
-                                    onclick="return confirm('Yakin ingin menghapus buku ini?')">
-                                Hapus
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-            @empty
-                <tr>
-                    <td colspan="6" class="py-4 text-center text-gray-500">Tidak ada data buku</td>
-                </tr>
-            @endforelse
-        </tbody>
-    </table>
-
-    {{-- Pagination --}}
-    <div class="mt-4">
+    <!-- Pagination -->
+    <div class="mt-8 flex justify-center">
         {{ $books->links() }}
     </div>
 </div>
